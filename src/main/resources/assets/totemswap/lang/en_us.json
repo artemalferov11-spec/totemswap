@@ -1,0 +1,6 @@
+{
+  "key.totemswap.swap": "Swap totem / head",
+  "key.category.totemswap": "Totem Swap",
+  "message.totemswap.no_totem": "No Totem of Undying in inventory",
+  "message.totemswap.no_head": "No player head in inventory"
+}
