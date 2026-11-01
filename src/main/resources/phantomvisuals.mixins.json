@@ -3,9 +3,11 @@
   "package": "dev.phantom.visuals.mixin",
   "compatibilityLevel": "JAVA_21",
   "client": [
+    "CameraMixin",
     "EntityMixin",
+    "ItemEntityRendererMixin",
     "LivingEntityRendererMixin",
-    "ItemEntityRendererMixin"
+    "MinecraftClientAccessor"
   ],
   "injectors": {
     "defaultRequire": 0

@@ -15,12 +15,14 @@ public final class ModuleManager {
     public static final DamageEffects DAMAGE = new DamageEffects();
     public static final TotemSwap TOTEM_SWAP = new TotemSwap();
     public static final AutoSprint AUTO_SPRINT = new AutoSprint();
+    public static final FreeLook FREELOOK = new FreeLook();
+    public static final FastPlace FASTPLACE = new FastPlace();
     public static final ThemeFeature THEME = new ThemeFeature();
 
     public static final List<Feature> ALL = List.of(
-            NAMETAGS, PREDICTIONS, ITEM_PHYSIC, INVISIBLES,
+            NAMETAGS, PREDICTIONS, ITEM_PHYSIC, INVISIBLES, FREELOOK,
             WORLD_PARTICLES, TRAILS, DAMAGE,
-            TOTEM_SWAP, AUTO_SPRINT,
+            TOTEM_SWAP, AUTO_SPRINT, FASTPLACE,
             THEME
     );
 
@@ -31,6 +33,7 @@ public final class ModuleManager {
         ITEM_PHYSIC.setEnabled(true);
         DAMAGE.setEnabled(true);
         TOTEM_SWAP.setEnabled(true);
+        FREELOOK.setEnabled(true);
     }
 
     public static List<Feature> of(Category category) {

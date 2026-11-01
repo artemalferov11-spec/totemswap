@@ -6,9 +6,11 @@ import dev.phantom.visuals.setting.BoolSetting;
 import dev.phantom.visuals.setting.NumberSetting;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.decoration.ArmorStandEntity;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.item.ItemStack;
 import net.minecraft.text.MutableText;
 import net.minecraft.text.Text;
 import net.minecraft.util.math.Vec3d;
@@ -21,6 +23,7 @@ public class Nametags extends Feature {
     private final BoolSetting mobs = add(new BoolSetting("Mobs", true));
     private final BoolSetting health = add(new BoolSetting("Health", true));
     private final BoolSetting distance = add(new BoolSetting("Distance", true));
+    private final BoolSetting armor = add(new BoolSetting("Armor (in sight)", true));
     private final BoolSetting background = add(new BoolSetting("Background", true));
 
     public Nametags() {
@@ -59,6 +62,37 @@ public class Nametags extends Feature {
             float s = (float) Math.max(0.025, dist * 0.0028) * scale.getF();
             Vec3d pos = p.add(0, e.getHeight() + 0.55 + s * 4, 0);
             RenderUtil.text(rc, t, pos, s, 0xFFFFFFFF, background.get() ? 0x80000000 : 0);
+
+            // Броня — только у игроков, которых видно напрямую (не сквозь стены)
+            if (armor.get() && e instanceof PlayerEntity && e != rc.mc.player && rc.mc.player.canSee(e)) {
+                RenderUtil.text(rc, armorLine(le), pos.add(0, s * 11, 0), s * 0.8f, 0xFFFFFFFF,
+                        background.get() ? 0x80000000 : 0);
+            }
         }
+    }
+
+    private static Text armorLine(LivingEntity le) {
+        EquipmentSlot[] slots = {EquipmentSlot.HEAD, EquipmentSlot.CHEST, EquipmentSlot.LEGS, EquipmentSlot.FEET};
+        String[] names = {"H", "C", "L", "B"};
+        MutableText t = Text.empty();
+        for (int i = 0; i < slots.length; i++) {
+            ItemStack st = le.getEquippedStack(slots[i]);
+            String v;
+            int col;
+            if (st.isEmpty()) {
+                v = "-";
+                col = 0x777777;
+            } else if (st.isDamageable()) {
+                int pct = 100 - Math.round(100f * st.getDamage() / st.getMaxDamage());
+                v = pct + "%";
+                col = pct > 66 ? 0x55FF55 : pct > 33 ? 0xFFFF55 : 0xFF5555;
+            } else {
+                v = "ok";
+                col = 0xFFFFFF;
+            }
+            final int c = col;
+            t.append(Text.literal(names[i] + ":" + v + " ").styled(style -> style.withColor(c)));
+        }
+        return t;
     }
 }

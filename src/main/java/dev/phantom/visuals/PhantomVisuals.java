@@ -2,6 +2,7 @@ package dev.phantom.visuals;
 
 import dev.phantom.visuals.gui.ClickGuiScreen;
 import dev.phantom.visuals.module.Feature;
+import dev.phantom.visuals.module.FreeLook;
 import dev.phantom.visuals.module.ModuleManager;
 import dev.phantom.visuals.render.RenderCtx;
 import net.fabricmc.api.ClientModInitializer;
@@ -27,6 +28,7 @@ public class PhantomVisuals implements ClientModInitializer {
 
     private static KeyBinding guiKey;
     private static KeyBinding swapKey;
+    private static KeyBinding freeLookKey;
 
     @Override
     public void onInitializeClient() {
@@ -43,6 +45,9 @@ public class PhantomVisuals implements ClientModInitializer {
         swapKey = KeyBindingHelper.registerKeyBinding(new KeyBinding(
                 "key.phantomvisuals.swap", InputUtil.Type.KEYSYM, GLFW.GLFW_KEY_X, "key.category.phantomvisuals"));
 
+        freeLookKey = KeyBindingHelper.registerKeyBinding(new KeyBinding(
+                "key.phantomvisuals.freelook", InputUtil.Type.KEYSYM, GLFW.GLFW_KEY_LEFT_ALT, "key.category.phantomvisuals"));
+
         ClientTickEvents.END_CLIENT_TICK.register(PhantomVisuals::tick);
         WorldRenderEvents.AFTER_TRANSLUCENT.register(PhantomVisuals::render);
         ClientLifecycleEvents.CLIENT_STOPPING.register(client -> Config.save());
@@ -52,7 +57,12 @@ public class PhantomVisuals implements ClientModInitializer {
     }
 
     private static void tick(MinecraftClient mc) {
-        if (mc.player == null || mc.world == null) return;
+        if (mc.player == null || mc.world == null) {
+            FreeLook.active = false;
+            return;
+        }
+
+        ModuleManager.FREELOOK.tickKey(mc, freeLookKey);
 
         while (guiKey.wasPressed()) {
             if (mc.currentScreen == null) ClickGuiScreen.open();
