@@ -1,0 +1,7 @@
+{
+  "key.category.phantomvisuals": "PhantomVisuals",
+  "key.phantomvisuals.gui": "Открыть ClickGUI",
+  "key.phantomvisuals.swap": "Сменить тотем / голову",
+  "message.phantomvisuals.no_totem": "В инвентаре нет Тотема бессмертия",
+  "message.phantomvisuals.no_head": "В инвентаре нет головы игрока"
+}

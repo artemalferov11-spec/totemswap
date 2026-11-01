@@ -1,8 +1,12 @@
-Сборка:
-1) Нужна Java 21.
-2) Самый простой способ получить gradle wrapper: зайти на https://fabricmc.net/develop/template/,
-   выбрать 1.21.4, скачать шаблон, и скопировать из него папки gradle/ и файлы gradlew, gradlew.bat в эту папку.
-   (Либо установить Gradle 8.12 и выполнить `gradle build`.)
-3) Выполнить:  ./gradlew build   (Windows: gradlew.bat build)
-4) Готовый мод: build/libs/totemswap-1.0.0.jar -> положить в папку mods (нужен Fabric API).
-Клавиша X меняется в Настройки -> Управление.
+PhantomVisuals 1.0.0 (Fabric 1.21.4, нужен Fabric API)
+
+RIGHT SHIFT - ClickGUI (ЛКМ: вкл/выкл, ПКМ: настройки, шапку панели можно таскать)
+X           - TotemSwap (тотем <-> голова), клавиши меняются в Настройки -> Управление
+
+Visuals:   Nametags (сквозь стены), Predictions (траектории), ItemPhysic, Invisibles
+Particles: World Particles, Trails, Damage Particles
+Utility:   TotemSwap, AutoSprint
+Client:    Theme (цвет интерфейса)
+
+Конфиг: config/phantomvisuals.json
+Сборка: GitHub Actions (вкладка Actions -> artifact).

@@ -1,0 +1,7 @@
+{
+  "key.category.phantomvisuals": "PhantomVisuals",
+  "key.phantomvisuals.gui": "Open ClickGUI",
+  "key.phantomvisuals.swap": "Swap totem / head",
+  "message.phantomvisuals.no_totem": "No Totem of Undying in inventory",
+  "message.phantomvisuals.no_head": "No player head in inventory"
+}

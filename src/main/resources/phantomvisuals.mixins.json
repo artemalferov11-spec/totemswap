@@ -1,0 +1,13 @@
+{
+  "required": true,
+  "package": "dev.phantom.visuals.mixin",
+  "compatibilityLevel": "JAVA_21",
+  "client": [
+    "EntityMixin",
+    "LivingEntityRendererMixin",
+    "ItemEntityRendererMixin"
+  ],
+  "injectors": {
+    "defaultRequire": 0
+  }
+}
