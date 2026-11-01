@@ -3,8 +3,8 @@ package dev.phantom.visuals.module;
 import dev.phantom.visuals.mixin.MinecraftClientAccessor;
 import dev.phantom.visuals.setting.BoolSetting;
 import dev.phantom.visuals.setting.NumberSetting;
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.item.BlockItem;
+import net.minecraft.class_1747;
+import net.minecraft.class_310;
 
 public class FastPlace extends Feature {
     private final BoolSetting blocksOnly = add(new BoolSetting("Blocks only", true));
@@ -15,11 +15,11 @@ public class FastPlace extends Feature {
     }
 
     @Override
-    public void onTick(MinecraftClient mc) {
-        if (mc.player == null) return;
+    public void onTick(class_310 mc) {
+        if (mc.field_1724 == null) return;
         if (blocksOnly.get()
-                && !(mc.player.getMainHandStack().getItem() instanceof BlockItem)
-                && !(mc.player.getOffHandStack().getItem() instanceof BlockItem)) {
+                && !(mc.field_1724.method_6047().method_7909() instanceof class_1747)
+                && !(mc.field_1724.method_6079().method_7909() instanceof class_1747)) {
             return;
         }
         MinecraftClientAccessor acc = (MinecraftClientAccessor) (Object) mc;

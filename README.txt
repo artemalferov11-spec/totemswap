@@ -1,13 +1,14 @@
-PhantomVisuals 1.1.0 (Fabric 1.21.4, нужен Fabric API)
+PhantomVisuals — обновлённые исходники (src/main/java + src/main/resources).
 
-RIGHT SHIFT - ClickGUI (ЛКМ: вкл/выкл, ПКМ: настройки, шапку панели можно таскать)
-X           - TotemSwap (тотем <-> голова), клавиши меняются в Настройки -> Управление
-LEFT ALT    - FreeLook (удерживать)
+Что нового:
+- PotionHud     — баннер с активными эффектами зелий
+- JumpCircles   — круги под ногами при прыжке
+- FreeCam       — свободная камера (персонаж стоит на месте)
+- Binds         — /bind <модуль> <клавиша>, /unbind <модуль>, /binds (сохраняются в конфиге)
+- ESP           — настройка "Through walls" (контур Glow виден сквозь стены в любом режиме)
+- Arrows       — стрелки к игрокам вокруг прицела (цвет: Accent/Custom/Rainbow)
+- ModuleList   — список включённых модулей с биндами справа сверху
+- Sky          — свой цвет неба
+- KillAura      — исправлен режим "Crits only"; AutoSprint не мешает критам в прыжке
 
-Visuals:   Nametags (сквозь стены), Predictions (траектории), ItemPhysic, Invisibles, FreeLook
-Particles: World Particles, Trails, Damage Particles
-Utility:   TotemSwap, AutoSprint, FastPlace
-Client:    Theme (цвет интерфейса)
-
-Конфиг: config/phantomvisuals.json
-Сборка: GitHub Actions (вкладка Actions -> artifact).
+Важно: исходники в intermediary-именах (class_310 и т.д.), в архиве нет build.gradle.

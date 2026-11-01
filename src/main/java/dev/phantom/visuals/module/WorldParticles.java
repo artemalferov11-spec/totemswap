@@ -3,11 +3,10 @@ package dev.phantom.visuals.module;
 import dev.phantom.visuals.setting.ModeSetting;
 import dev.phantom.visuals.setting.NumberSetting;
 import dev.phantom.visuals.util.ParticleStyles;
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.network.ClientPlayerEntity;
-import net.minecraft.particle.ParticleEffect;
-
 import java.util.concurrent.ThreadLocalRandom;
+import net.minecraft.class_2394;
+import net.minecraft.class_310;
+import net.minecraft.class_746;
 
 public class WorldParticles extends Feature {
     private final ModeSetting style = add(new ModeSetting("Style", "Snowflake", ParticleStyles.NAMES));
@@ -20,17 +19,17 @@ public class WorldParticles extends Feature {
     }
 
     @Override
-    public void onTick(MinecraftClient mc) {
-        ClientPlayerEntity p = mc.player;
-        if (p == null || mc.world == null || mc.isPaused()) return;
+    public void onTick(class_310 mc) {
+        class_746 p = mc.field_1724;
+        if (p == null || mc.field_1687 == null || mc.method_1493()) return;
         ThreadLocalRandom r = ThreadLocalRandom.current();
-        ParticleEffect effect = ParticleStyles.get(style.get());
+        class_2394 effect = ParticleStyles.get(style.get());
         double rad = radius.get();
 
         for (int i = 0; i < amount.getI(); i++) {
-            double x = p.getX() + (r.nextDouble() * 2 - 1) * rad;
-            double z = p.getZ() + (r.nextDouble() * 2 - 1) * rad;
-            double y = p.getEyeY() + (r.nextDouble() * 2 - 0.6) * rad * 0.5;
+            double x = p.method_23317() + (r.nextDouble() * 2 - 1) * rad;
+            double z = p.method_23321() + (r.nextDouble() * 2 - 1) * rad;
+            double y = p.method_23320() + (r.nextDouble() * 2 - 0.6) * rad * 0.5;
             double vx = (r.nextDouble() - 0.5) * 0.02;
             double vz = (r.nextDouble() - 0.5) * 0.02;
             double vy;
@@ -44,7 +43,7 @@ public class WorldParticles extends Feature {
                 default:
                     vy = -0.03 - r.nextDouble() * 0.03;
             }
-            mc.world.addParticle(effect, x, y, z, vx, vy, vz);
+            mc.field_1687.method_8406(effect, x, y, z, vx, vy, vz);
         }
     }
 }

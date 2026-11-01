@@ -4,8 +4,13 @@
   "compatibilityLevel": "JAVA_21",
   "client": [
     "CameraMixin",
+    "ClientWorldMixin",
+    "ClientPlayerMixin",
     "EntityMixin",
+    "HeldItemRendererMixin",
     "ItemEntityRendererMixin",
+    "LivingEntityMixin",
+    "MinecraftClientMixin",
     "LivingEntityRendererMixin",
     "MinecraftClientAccessor"
   ],

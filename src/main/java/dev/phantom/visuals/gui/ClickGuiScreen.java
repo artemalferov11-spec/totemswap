@@ -8,10 +8,6 @@ import dev.phantom.visuals.setting.ModeSetting;
 import dev.phantom.visuals.setting.NumberSetting;
 import dev.phantom.visuals.setting.Setting;
 import dev.phantom.visuals.util.Theme;
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.gui.DrawContext;
-import net.minecraft.client.gui.screen.Screen;
-import net.minecraft.text.Text;
 import org.lwjgl.glfw.GLFW;
 
 import java.util.ArrayList;
@@ -20,13 +16,17 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import net.minecraft.class_2561;
+import net.minecraft.class_310;
+import net.minecraft.class_332;
+import net.minecraft.class_437;
 
-public class ClickGuiScreen extends Screen {
+public class ClickGuiScreen extends class_437 {
     private static ClickGuiScreen instance;
 
     public static void open() {
         if (instance == null) instance = new ClickGuiScreen();
-        MinecraftClient.getInstance().setScreen(instance);
+        class_310.method_1551().method_1507(instance);
     }
 
     private static final int PW = 126;
@@ -65,17 +65,17 @@ public class ClickGuiScreen extends Screen {
     private String hoverDesc;
 
     private ClickGuiScreen() {
-        super(Text.literal("PhantomVisuals"));
+        super(class_2561.method_43470("PhantomVisuals"));
         for (Category c : Category.values()) panels.add(new Panel(c));
     }
 
     @Override
-    protected void init() {
+    protected void method_25426() {
         if (!placed) {
             int n = panels.size();
             int gap = 10;
             int total = n * PW + (n - 1) * gap;
-            int x = Math.max(6, (width - total) / 2);
+            int x = Math.max(6, (field_22789 - total) / 2);
             for (Panel p : panels) {
                 p.x = x;
                 p.y = 34;
@@ -86,12 +86,12 @@ public class ClickGuiScreen extends Screen {
     }
 
     @Override
-    public boolean shouldPause() {
+    public boolean method_25421() {
         return false;
     }
 
     @Override
-    public void removed() {
+    public void method_25432() {
         dragging = null;
         sliding = null;
         dev.phantom.visuals.Config.save();
@@ -117,19 +117,19 @@ public class ClickGuiScreen extends Screen {
         return h;
     }
 
-    private static void roundRect(DrawContext c, int x, int y, int w, int h, int r, int color) {
+    private static void roundRect(class_332 c, int x, int y, int w, int h, int r, int color) {
         if (w <= 0 || h <= 0) return;
         r = Math.min(r, Math.min(w, h) / 2);
-        c.fill(x, y + r, x + w, y + h - r, color);
+        c.method_25294(x, y + r, x + w, y + h - r, color);
         for (int i = 0; i < r; i++) {
             double dy = r - i - 0.5;
             int inset = r - (int) Math.round(Math.sqrt(Math.max(0, r * r - dy * dy)));
-            c.fill(x + inset, y + i, x + w - inset, y + i + 1, color);
-            c.fill(x + inset, y + h - i - 1, x + w - inset, y + h - i, color);
+            c.method_25294(x + inset, y + i, x + w - inset, y + i + 1, color);
+            c.method_25294(x + inset, y + h - i - 1, x + w - inset, y + h - i, color);
         }
     }
 
-    private void pill(DrawContext ctx, int x, int y, int w, int h, float t) {
+    private void pill(class_332 ctx, int x, int y, int w, int h, float t) {
         int accent = Theme.accent(0f);
         roundRect(ctx, x, y, w, h, h / 2, Theme.lerp(C_TRACK, accent, t));
         int knob = h - 4;
@@ -140,40 +140,40 @@ public class ClickGuiScreen extends Screen {
     // ----------------------------------------------------------------- render
 
     @Override
-    public void render(DrawContext ctx, int mx, int my, float delta) {
+    public void method_25394(class_332 ctx, int mx, int my, float delta) {
         long now = System.nanoTime();
         float dt = (now - lastNanos) / 1.0E9f;
         lastNanos = now;
         k = 1f - (float) Math.exp(-Math.min(dt, 0.1f) * 16f);
         hoverDesc = null;
 
-        ctx.fillGradient(0, 0, width, height, 0xB0070711, 0xD0120A26);
+        ctx.method_25296(0, 0, field_22789, field_22790, 0xB0070711, 0xD0120A26);
 
         // Заголовок с градиентом
         String title = "PhantomVisuals";
-        int tw = textRenderer.getWidth(title) * 2;
-        ctx.getMatrices().push();
-        ctx.getMatrices().translate((float) ((width - tw) / 2), 8f, 0f);
-        ctx.getMatrices().scale(2f, 2f, 1f);
+        int tw = field_22793.method_1727(title) * 2;
+        ctx.method_51448().method_22903();
+        ctx.method_51448().method_46416((float) ((field_22789 - tw) / 2), 8f, 0f);
+        ctx.method_51448().method_22905(2f, 2f, 1f);
         int cx = 0;
         for (int i = 0; i < title.length(); i++) {
             String ch = title.substring(i, i + 1);
-            ctx.drawText(textRenderer, ch, cx, 0, Theme.accent(i * 0.05f), true);
-            cx += textRenderer.getWidth(ch);
+            ctx.method_51433(field_22793, ch, cx, 0, Theme.accent(i * 0.05f), true);
+            cx += field_22793.method_1727(ch);
         }
-        ctx.getMatrices().pop();
+        ctx.method_51448().method_22909();
 
         for (Panel p : panels) renderPanel(ctx, p, mx, my);
 
         String hint = hoverDesc != null ? hoverDesc
                 : "Left click: toggle   |   Right click: settings   |   RIGHT SHIFT: close";
-        int hw = textRenderer.getWidth(hint);
-        int hx = (width - hw) / 2;
-        roundRect(ctx, hx - 8, height - 24, hw + 16, 16, 4, 0xB0000000);
-        ctx.drawText(textRenderer, hint, hx, height - 20, hoverDesc != null ? C_TEXT : C_DIM, false);
+        int hw = field_22793.method_1727(hint);
+        int hx = (field_22789 - hw) / 2;
+        roundRect(ctx, hx - 8, field_22790 - 24, hw + 16, 16, 4, 0xB0000000);
+        ctx.method_51433(field_22793, hint, hx, field_22790 - 20, hoverDesc != null ? C_TEXT : C_DIM, false);
     }
 
-    private void renderPanel(DrawContext ctx, Panel p, int mx, int my) {
+    private void renderPanel(class_332 ctx, Panel p, int mx, int my) {
         float col = anim("col:" + p.cat, p.collapsed ? 0f : 1f);
         float[] oa = new float[p.features.size()];
         int contentH = 0;
@@ -189,21 +189,21 @@ public class ClickGuiScreen extends Screen {
         roundRect(ctx, p.x - 1, p.y - 1, PW + 2, total + 2, 5, 0x55000000);
         roundRect(ctx, p.x, p.y, PW, total, 4, C_PANEL);
         roundRect(ctx, p.x, p.y, PW, HEAD, 4, C_HEAD);
-        ctx.fill(p.x, p.y + HEAD - 4, p.x + PW, p.y + HEAD, C_HEAD);
+        ctx.method_25294(p.x, p.y + HEAD - 4, p.x + PW, p.y + HEAD, C_HEAD);
 
         // акцентная линия под заголовком
         for (int i = 0; i < PW; i++) {
-            ctx.fill(p.x + i, p.y + HEAD - 1, p.x + i + 1, p.y + HEAD, Theme.accent(i / (float) PW));
+            ctx.method_25294(p.x + i, p.y + HEAD - 1, p.x + i + 1, p.y + HEAD, Theme.accent(i / (float) PW));
         }
         String label = p.cat.label.toUpperCase();
-        ctx.drawText(textRenderer, label, p.x + 9, p.y + 7, C_TEXT, true);
-        ctx.drawText(textRenderer, p.collapsed ? "+" : "-", p.x + PW - 14, p.y + 7, C_DIM, false);
+        ctx.method_51433(field_22793, label, p.x + 9, p.y + 7, C_TEXT, true);
+        ctx.method_51433(field_22793, p.collapsed ? "+" : "-", p.x + PW - 14, p.y + 7, C_DIM, false);
 
         if (bodyH <= 0) return;
 
         int accent = Theme.accent(0f);
         int ry = p.y + HEAD;
-        ctx.enableScissor(p.x, p.y + HEAD, p.x + PW, p.y + HEAD + bodyH);
+        ctx.method_44379(p.x, p.y + HEAD, p.x + PW, p.y + HEAD + bodyH);
         for (int i = 0; i < p.features.size(); i++) {
             Feature f = p.features.get(i);
             boolean hover = mx >= p.x && mx < p.x + PW && my >= ry && my < ry + ROW && my < p.bodyBottom;
@@ -211,16 +211,16 @@ public class ClickGuiScreen extends Screen {
             float en = anim("en:" + f.name, f.isEnabled() ? 1f : 0f);
             if (hover) hoverDesc = f.description;
 
-            ctx.fill(p.x, ry, p.x + PW, ry + ROW, Theme.withAlpha(accent, (int) (en * 34)));
-            ctx.fill(p.x, ry, p.x + PW, ry + ROW, ((int) (hv * 20) << 24) | 0xFFFFFF);
-            if (en > 0.02f) ctx.fill(p.x, ry + 3, p.x + 2, ry + ROW - 3, Theme.withAlpha(accent, (int) (en * 255)));
+            ctx.method_25294(p.x, ry, p.x + PW, ry + ROW, Theme.withAlpha(accent, (int) (en * 34)));
+            ctx.method_25294(p.x, ry, p.x + PW, ry + ROW, ((int) (hv * 20) << 24) | 0xFFFFFF);
+            if (en > 0.02f) ctx.method_25294(p.x, ry + 3, p.x + 2, ry + ROW - 3, Theme.withAlpha(accent, (int) (en * 255)));
 
-            ctx.drawText(textRenderer, f.name, p.x + 9, ry + 6, Theme.lerp(C_DIM, C_TEXT, f.isPermanent() ? 1f : en), true);
+            ctx.method_51433(field_22793, f.name, p.x + 9, ry + 6, Theme.lerp(C_DIM, C_TEXT, f.isPermanent() ? 1f : en), true);
 
             if (!f.isPermanent()) pill(ctx, p.x + PW - 29, ry + 5, 22, 10, en);
             if (!f.settings.isEmpty()) {
                 String ind = open.contains(f) ? "-" : "+";
-                ctx.drawText(textRenderer, ind, p.x + PW - (f.isPermanent() ? 14 : 41), ry + 6, C_DIM, false);
+                ctx.method_51433(field_22793, ind, p.x + PW - (f.isPermanent() ? 14 : 41), ry + 6, C_DIM, false);
             }
             ry += ROW;
 
@@ -230,47 +230,47 @@ public class ClickGuiScreen extends Screen {
                 ry += sh;
             }
         }
-        ctx.disableScissor();
+        ctx.method_44380();
     }
 
-    private void renderSettings(DrawContext ctx, Feature f, int x, int y, int h) {
-        ctx.enableScissor(x, y, x + PW, y + h);
-        ctx.fill(x, y, x + PW, y + h, 0x50000000);
+    private void renderSettings(class_332 ctx, Feature f, int x, int y, int h) {
+        ctx.method_44379(x, y, x + PW, y + h);
+        ctx.method_25294(x, y, x + PW, y + h, 0x50000000);
         int accent = Theme.accent(0.1f);
         int ry = y;
         for (Setting s : f.settings) {
             int rh = rowHeight(s);
             if (s instanceof BoolSetting b) {
                 float a = anim("b:" + f.name + s.name, b.get() ? 1f : 0f);
-                ctx.drawText(textRenderer, s.name, x + 10, ry + 4, C_DIM, false);
+                ctx.method_51433(field_22793, s.name, x + 10, ry + 4, C_DIM, false);
                 pill(ctx, x + PW - 28, ry + 3, 20, 9, a);
             } else if (s instanceof ModeSetting m) {
-                ctx.drawText(textRenderer, s.name, x + 10, ry + 4, C_DIM, false);
+                ctx.method_51433(field_22793, s.name, x + 10, ry + 4, C_DIM, false);
                 String v = m.get();
-                ctx.drawText(textRenderer, v, x + PW - 8 - textRenderer.getWidth(v), ry + 4, accent, false);
+                ctx.method_51433(field_22793, v, x + PW - 8 - field_22793.method_1727(v), ry + 4, accent, false);
             } else if (s instanceof NumberSetting n) {
-                ctx.drawText(textRenderer, s.name, x + 10, ry + 4, C_DIM, false);
+                ctx.method_51433(field_22793, s.name, x + 10, ry + 4, C_DIM, false);
                 String v = n.display();
-                ctx.drawText(textRenderer, v, x + PW - 8 - textRenderer.getWidth(v), ry + 4, accent, false);
+                ctx.method_51433(field_22793, v, x + PW - 8 - field_22793.method_1727(v), ry + 4, accent, false);
                 int tx = x + 10, tw = PW - 20, ty = ry + 17;
                 float t = (float) ((n.get() - n.min) / (n.max - n.min));
                 t = Math.max(0f, Math.min(1f, t));
-                ctx.fill(tx, ty, tx + tw, ty + 3, C_TRACK);
+                ctx.method_25294(tx, ty, tx + tw, ty + 3, C_TRACK);
                 int fw = Math.round(t * tw);
                 for (int i = 0; i < fw; i++) {
-                    ctx.fill(tx + i, ty, tx + i + 1, ty + 3, Theme.accent(i / (float) tw * 0.5f));
+                    ctx.method_25294(tx + i, ty, tx + i + 1, ty + 3, Theme.accent(i / (float) tw * 0.5f));
                 }
-                ctx.fill(tx + fw - 2, ty - 2, tx + fw + 2, ty + 5, 0xFFFFFFFF);
+                ctx.method_25294(tx + fw - 2, ty - 2, tx + fw + 2, ty + 5, 0xFFFFFFFF);
             }
             ry += rh;
         }
-        ctx.disableScissor();
+        ctx.method_44380();
     }
 
     // ------------------------------------------------------------------ input
 
     @Override
-    public boolean mouseClicked(double mxD, double myD, int button) {
+    public boolean method_25402(double mxD, double myD, int button) {
         int mx = (int) mxD, my = (int) myD;
         for (int i = panels.size() - 1; i >= 0; i--) {
             Panel p = panels.get(i);
@@ -310,7 +310,7 @@ public class ClickGuiScreen extends Screen {
             }
             return true;
         }
-        return super.mouseClicked(mxD, myD, button);
+        return super.method_25402(mxD, myD, button);
     }
 
     private void clickSettings(Feature f, int x, int y, int mx, int my, int button) {
@@ -344,32 +344,32 @@ public class ClickGuiScreen extends Screen {
     }
 
     @Override
-    public boolean mouseDragged(double mx, double my, int button, double dx, double dy) {
+    public boolean method_25403(double mx, double my, int button, double dx, double dy) {
         if (dragging != null && button == 0) {
-            dragging.x = Math.max(0, Math.min(width - PW, (int) mx - dragDx));
-            dragging.y = Math.max(0, Math.min(height - HEAD, (int) my - dragDy));
+            dragging.x = Math.max(0, Math.min(field_22789 - PW, (int) mx - dragDx));
+            dragging.y = Math.max(0, Math.min(field_22790 - HEAD, (int) my - dragDy));
             return true;
         }
         if (sliding != null && button == 0) {
             updateSlider((int) mx);
             return true;
         }
-        return super.mouseDragged(mx, my, button, dx, dy);
+        return super.method_25403(mx, my, button, dx, dy);
     }
 
     @Override
-    public boolean mouseReleased(double mx, double my, int button) {
+    public boolean method_25406(double mx, double my, int button) {
         dragging = null;
         sliding = null;
-        return super.mouseReleased(mx, my, button);
+        return super.method_25406(mx, my, button);
     }
 
     @Override
-    public boolean keyPressed(int keyCode, int scanCode, int modifiers) {
+    public boolean method_25404(int keyCode, int scanCode, int modifiers) {
         if (keyCode == GLFW.GLFW_KEY_RIGHT_SHIFT) {
-            close();
+            method_25419();
             return true;
         }
-        return super.keyPressed(keyCode, scanCode, modifiers);
+        return super.method_25404(keyCode, scanCode, modifiers);
     }
 }

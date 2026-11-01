@@ -1,23 +1,25 @@
 package dev.phantom.visuals.module;
 
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.network.ClientPlayerEntity;
+import net.minecraft.class_310;
+import net.minecraft.class_746;
 
 public class AutoSprint extends Feature {
     public AutoSprint() {
-        super("AutoSprint", "Sprint automatically while moving forward", Category.UTILITY, false);
+        super("AutoSprint", "Sprint automatically while moving forward", Category.MOVEMENT, false);
     }
 
     @Override
-    public void onTick(MinecraftClient mc) {
-        ClientPlayerEntity p = mc.player;
+    public void onTick(class_310 mc) {
+        class_746 p = mc.field_1724;
         if (p == null) return;
-        if (mc.options.forwardKey.isPressed()
-                && !p.isSneaking()
-                && !p.isUsingItem()
-                && !p.horizontalCollision
-                && p.getHungerManager().getFoodLevel() > 6) {
-            p.setSprinting(true);
+        // В режиме критов спринт мешает (в воздухе со спринтом крита нет) — не включаем его, пока мы в прыжке
+        if (ModuleManager.KILLAURA.critMode() && !p.method_24828()) return;
+        if (mc.field_1690.field_1894.method_1434()
+                && !p.method_5715()
+                && !p.method_6115()
+                && !p.field_5976
+                && p.method_7344().method_7586() > 6) {
+            p.method_5728(true);
         }
     }
 }

@@ -1,7 +1,7 @@
 package dev.phantom.visuals.util;
 
 import dev.phantom.visuals.module.ModuleManager;
-import net.minecraft.util.math.MathHelper;
+import net.minecraft.class_3532;
 
 public final class Theme {
     private Theme() {}
@@ -15,7 +15,7 @@ public final class Theme {
             h = ModuleManager.THEME.hue.getF() / 360f + shift * 0.5f;
         }
         h = h - (float) Math.floor(h);
-        return 0xFF000000 | MathHelper.hsvToRgb(h, 0.62f, 1.0f);
+        return 0xFF000000 | class_3532.method_15369(h, 0.62f, 1.0f);
     }
 
     public static int withAlpha(int color, int alpha) {

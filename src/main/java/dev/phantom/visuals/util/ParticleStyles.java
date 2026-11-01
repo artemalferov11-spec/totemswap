@@ -1,7 +1,7 @@
 package dev.phantom.visuals.util;
 
-import net.minecraft.particle.ParticleEffect;
-import net.minecraft.particle.ParticleTypes;
+import net.minecraft.class_2394;
+import net.minecraft.class_2398;
 
 public final class ParticleStyles {
     private ParticleStyles() {}
@@ -11,21 +11,21 @@ public final class ParticleStyles {
             "Electric", "Glow", "Firework", "Crit", "Dragon", "Totem", "Note"
     };
 
-    public static ParticleEffect get(String name) {
+    public static class_2394 get(String name) {
         return switch (name) {
-            case "Flame" -> ParticleTypes.FLAME;
-            case "Soul Fire" -> ParticleTypes.SOUL_FIRE_FLAME;
-            case "Snowflake" -> ParticleTypes.SNOWFLAKE;
-            case "Heart" -> ParticleTypes.HEART;
-            case "Enchant" -> ParticleTypes.ENCHANT;
-            case "Electric" -> ParticleTypes.ELECTRIC_SPARK;
-            case "Glow" -> ParticleTypes.GLOW;
-            case "Firework" -> ParticleTypes.FIREWORK;
-            case "Crit" -> ParticleTypes.CRIT;
-            case "Dragon" -> ParticleTypes.DRAGON_BREATH;
-            case "Totem" -> ParticleTypes.TOTEM_OF_UNDYING;
-            case "Note" -> ParticleTypes.NOTE;
-            default -> ParticleTypes.END_ROD;
+            case "Flame" -> class_2398.field_11240;
+            case "Soul Fire" -> class_2398.field_22246;
+            case "Snowflake" -> class_2398.field_28013;
+            case "Heart" -> class_2398.field_11201;
+            case "Enchant" -> class_2398.field_11215;
+            case "Electric" -> class_2398.field_29644;
+            case "Glow" -> class_2398.field_28479;
+            case "Firework" -> class_2398.field_11248;
+            case "Crit" -> class_2398.field_11205;
+            case "Dragon" -> class_2398.field_11216;
+            case "Totem" -> class_2398.field_11220;
+            case "Note" -> class_2398.field_11224;
+            default -> class_2398.field_11207;
         };
     }
 }

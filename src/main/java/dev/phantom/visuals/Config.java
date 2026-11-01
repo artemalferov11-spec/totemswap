@@ -27,6 +27,7 @@ public final class Config {
             for (Feature f : ModuleManager.ALL) {
                 JsonObject o = new JsonObject();
                 o.addProperty("enabled", f.isEnabled());
+                o.addProperty("bind", f.bind);
                 JsonObject s = new JsonObject();
                 for (Setting st : f.settings) s.add(st.name, st.save());
                 o.add("settings", s);
@@ -47,6 +48,7 @@ public final class Config {
                 if (!root.has(f.name)) continue;
                 JsonObject o = root.getAsJsonObject(f.name);
                 if (o.has("enabled")) f.setEnabled(o.get("enabled").getAsBoolean());
+                if (o.has("bind")) f.bind = o.get("bind").getAsInt();
                 if (o.has("settings")) {
                     JsonObject s = o.getAsJsonObject("settings");
                     for (Setting st : f.settings) {

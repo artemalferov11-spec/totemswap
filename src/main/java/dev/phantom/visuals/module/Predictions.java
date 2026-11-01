@@ -6,24 +6,23 @@ import dev.phantom.visuals.setting.BoolSetting;
 import dev.phantom.visuals.setting.ModeSetting;
 import dev.phantom.visuals.setting.NumberSetting;
 import dev.phantom.visuals.util.Theme;
-import net.minecraft.client.network.ClientPlayerEntity;
-import net.minecraft.client.render.VertexConsumer;
-import net.minecraft.client.world.ClientWorld;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.item.CrossbowItem;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
-import net.minecraft.util.hit.BlockHitResult;
-import net.minecraft.util.hit.HitResult;
-import net.minecraft.util.math.Box;
-import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.math.Vec3d;
-import net.minecraft.world.RaycastContext;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import net.minecraft.class_1297;
+import net.minecraft.class_1309;
+import net.minecraft.class_1764;
+import net.minecraft.class_1799;
+import net.minecraft.class_1802;
+import net.minecraft.class_238;
+import net.minecraft.class_239;
+import net.minecraft.class_243;
+import net.minecraft.class_3532;
+import net.minecraft.class_3959;
+import net.minecraft.class_3965;
+import net.minecraft.class_4588;
+import net.minecraft.class_638;
+import net.minecraft.class_746;
 
 public class Predictions extends Feature {
     private final BoolSetting landing = add(new BoolSetting("Landing marker", true));
@@ -36,24 +35,24 @@ public class Predictions extends Feature {
     }
 
     /** {скорость, гравитация, добавка к pitch} или null, если ничего не метаем. */
-    private double[] physics(ClientPlayerEntity p) {
-        if (p.isUsingItem()) {
-            ItemStack a = p.getActiveItem();
-            if (a.isOf(Items.BOW)) {
-                float f = (72000 - p.getItemUseTimeLeft()) / 20f;
+    private double[] physics(class_746 p) {
+        if (p.method_6115()) {
+            class_1799 a = p.method_6030();
+            if (a.method_31574(class_1802.field_8102)) {
+                float f = (72000 - p.method_6014()) / 20f;
                 f = (f * f + f * 2f) / 3f;
                 if (f < 0.1f) return null;
                 if (f > 1f) f = 1f;
                 return new double[]{f * 3.0, 0.05, 0};
             }
-            if (a.isOf(Items.TRIDENT)) return new double[]{2.5, 0.05, 0};
+            if (a.method_31574(class_1802.field_8547)) return new double[]{2.5, 0.05, 0};
         }
-        ItemStack[] hands = {p.getMainHandStack(), p.getOffHandStack()};
-        for (ItemStack s : hands) {
-            if (s.isOf(Items.CROSSBOW) && CrossbowItem.isCharged(s)) return new double[]{3.15, 0.05, 0};
-            if (s.isOf(Items.ENDER_PEARL) || s.isOf(Items.SNOWBALL) || s.isOf(Items.EGG)) return new double[]{1.5, 0.03, 0};
-            if (s.isOf(Items.SPLASH_POTION) || s.isOf(Items.LINGERING_POTION)) return new double[]{0.5, 0.05, -20};
-            if (s.isOf(Items.EXPERIENCE_BOTTLE)) return new double[]{0.7, 0.07, -20};
+        class_1799[] hands = {p.method_6047(), p.method_6079()};
+        for (class_1799 s : hands) {
+            if (s.method_31574(class_1802.field_8399) && class_1764.method_7781(s)) return new double[]{3.15, 0.05, 0};
+            if (s.method_31574(class_1802.field_8634) || s.method_31574(class_1802.field_8543) || s.method_31574(class_1802.field_8803)) return new double[]{1.5, 0.03, 0};
+            if (s.method_31574(class_1802.field_8436) || s.method_31574(class_1802.field_8150)) return new double[]{0.5, 0.05, -20};
+            if (s.method_31574(class_1802.field_8287)) return new double[]{0.7, 0.07, -20};
         }
         return null;
     }
@@ -61,7 +60,7 @@ public class Predictions extends Feature {
     private int col(float t) {
         switch (color.get()) {
             case "Rainbow":
-                return 0xFF000000 | MathHelper.hsvToRgb((t * 0.8f + (System.currentTimeMillis() % 4000L) / 4000f) % 1f, 0.7f, 1f);
+                return 0xFF000000 | class_3532.method_15369((t * 0.8f + (System.currentTimeMillis() % 4000L) / 4000f) % 1f, 0.7f, 1f);
             case "White":
                 return 0xFFFFFFFF;
             default:
@@ -71,47 +70,47 @@ public class Predictions extends Feature {
 
     @Override
     public void onWorldRender(RenderCtx rc) {
-        ClientPlayerEntity p = rc.mc.player;
-        ClientWorld world = rc.mc.world;
+        class_746 p = rc.mc.field_1724;
+        class_638 world = rc.mc.field_1687;
         double[] ph = physics(p);
         if (ph == null) return;
 
         double speed = ph[0], gravity = ph[1], roll = ph[2];
         double rad = Math.PI / 180.0;
-        float yaw = p.getYaw(rc.delta), pitch = p.getPitch(rc.delta);
+        float yaw = p.method_5705(rc.delta), pitch = p.method_5695(rc.delta);
         double dx = -Math.sin(yaw * rad) * Math.cos(pitch * rad);
         double dy = -Math.sin((pitch + roll) * rad);
         double dz = Math.cos(yaw * rad) * Math.cos(pitch * rad);
-        Vec3d vel = new Vec3d(dx, dy, dz).normalize().multiply(speed);
-        Vec3d pv = p.getVelocity();
-        vel = vel.add(pv.x, p.isOnGround() ? 0 : pv.y, pv.z);
-        Vec3d pos = p.getCameraPosVec(rc.delta).subtract(0, 0.1, 0);
+        class_243 vel = new class_243(dx, dy, dz).method_1029().method_1021(speed);
+        class_243 pv = p.method_18798();
+        vel = vel.method_1031(pv.field_1352, p.method_24828() ? 0 : pv.field_1351, pv.field_1350);
+        class_243 pos = p.method_5836(rc.delta).method_1023(0, 0.1, 0);
 
-        List<Entity> candidates = new ArrayList<>();
+        List<class_1297> candidates = new ArrayList<>();
         if (hits.get()) {
-            candidates = world.getOtherEntities(p, new Box(pos, pos).expand(110),
-                    e -> e instanceof LivingEntity && e.isAlive() && !e.isSpectator());
+            candidates = world.method_8333(p, new class_238(pos, pos).method_1014(110),
+                    e -> e instanceof class_1309 && e.method_5805() && !e.method_7325());
         }
 
-        List<Vec3d> pts = new ArrayList<>();
+        List<class_243> pts = new ArrayList<>();
         pts.add(pos);
-        Vec3d hitPos = null;
-        Entity hitEntity = null;
+        class_243 hitPos = null;
+        class_1297 hitEntity = null;
 
         for (int i = 0; i < steps.getI(); i++) {
-            Vec3d next = pos.add(vel);
-            BlockHitResult br = world.raycast(new RaycastContext(pos, next,
-                    RaycastContext.ShapeType.COLLIDER, RaycastContext.FluidHandling.NONE, p));
-            boolean blockHit = br.getType() != HitResult.Type.MISS;
-            Vec3d end = blockHit ? br.getPos() : next;
+            class_243 next = pos.method_1019(vel);
+            class_3965 br = world.method_17742(new class_3959(pos, next,
+                    class_3959.class_3960.field_17558, class_3959.class_242.field_1348, p));
+            boolean blockHit = br.method_17783() != class_239.class_240.field_1333;
+            class_243 end = blockHit ? br.method_17784() : next;
 
-            Entity he = null;
-            Vec3d hp = null;
+            class_1297 he = null;
+            class_243 hp = null;
             double best = Double.MAX_VALUE;
-            for (Entity e : candidates) {
-                Optional<Vec3d> o = e.getBoundingBox().expand(0.3).raycast(pos, end);
+            for (class_1297 e : candidates) {
+                Optional<class_243> o = e.method_5829().method_1014(0.3).method_992(pos, end);
                 if (o.isPresent()) {
-                    double d = pos.squaredDistanceTo(o.get());
+                    double d = pos.method_1025(o.get());
                     if (d < best) {
                         best = d;
                         he = e;
@@ -131,20 +130,20 @@ public class Predictions extends Feature {
                 break;
             }
             pos = next;
-            vel = vel.multiply(0.99).add(0, -gravity, 0);
-            if (pos.y < world.getBottomY() - 8) break;
+            vel = vel.method_1021(0.99).method_1031(0, -gravity, 0);
+            if (pos.field_1351 < world.method_31607() - 8) break;
         }
 
-        VertexConsumer vc = RenderUtil.lines(rc);
+        class_4588 vc = RenderUtil.lines(rc);
         int n = pts.size();
         for (int i = 1; i < n; i++) {
             RenderUtil.line(rc, vc, pts.get(i - 1), pts.get(i), col((float) i / n));
         }
         if (hitEntity != null) {
-            RenderUtil.box(rc, vc, hitEntity.getBoundingBox(), 0xFFFF4B4B);
+            RenderUtil.box(rc, vc, hitEntity.method_5829(), 0xFFFF4B4B);
         } else if (landing.get() && hitPos != null) {
             int c = col(1f);
-            RenderUtil.box(rc, vc, new Box(hitPos, hitPos).expand(0.12), c);
+            RenderUtil.box(rc, vc, new class_238(hitPos, hitPos).method_1014(0.12), c);
             RenderUtil.cross(rc, vc, hitPos, 0.3, c);
         }
     }

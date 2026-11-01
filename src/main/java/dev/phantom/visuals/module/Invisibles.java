@@ -1,11 +1,11 @@
 package dev.phantom.visuals.module;
 
 import dev.phantom.visuals.setting.BoolSetting;
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.decoration.ArmorStandEntity;
-import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.class_1297;
+import net.minecraft.class_1309;
+import net.minecraft.class_1531;
+import net.minecraft.class_1657;
+import net.minecraft.class_310;
 
 public class Invisibles extends Feature {
     private final BoolSetting players = add(new BoolSetting("Players", true));
@@ -16,11 +16,11 @@ public class Invisibles extends Feature {
     }
 
     /** Используется миксином Entity#isGlowing. */
-    public boolean matches(Entity e) {
+    public boolean matches(class_1297 e) {
         if (!isEnabled()) return false;
-        if (!(e instanceof LivingEntity) || e instanceof ArmorStandEntity) return false;
-        if (e == MinecraftClient.getInstance().player) return false;
-        if (!e.isInvisible()) return false;
-        return e instanceof PlayerEntity ? players.get() : mobs.get();
+        if (!(e instanceof class_1309) || e instanceof class_1531) return false;
+        if (e == class_310.method_1551().field_1724) return false;
+        if (!e.method_5767()) return false;
+        return e instanceof class_1657 ? players.get() : mobs.get();
     }
 }
